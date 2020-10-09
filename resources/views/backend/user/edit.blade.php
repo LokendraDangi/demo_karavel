@@ -1,0 +1,83 @@
+@extends('layouts.backend')
+@section('title','Edit User')
+
+@section('content')
+
+    <section class="content-header">
+        <h1>
+            User Management
+            <small>it all about user data</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="#">Examples</a></li>
+            <li class="active">Blank page</li>
+        </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+
+        <!-- Default box -->
+        <div class="box">
+            <div class="box-header with-border">
+                <h3 class="box-title">Edit User
+                    <a href="{{route('user.create')}}" class="btn btn-info"><i class="fa fa-plus"></i>Create</a>
+                    <a href="{{route('user.index')}}" class="btn btn-info"><i class="fa fa-plus"></i>List</a>
+                </h3>
+
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
+                            title="Collapse">
+                        <i class="fa fa-minus"></i></button>
+                    <button type="button" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove">
+                        <i class="fa fa-times"></i></button>
+                </div>
+            </div>
+            <div class="box-body">
+                @include('layouts.includes.error')
+                <form action="{{route('user.update',$data['user']->id)}}" method="post">
+                    <input type="hidden" name="_method" value="PUT">
+                    @csrf
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" name="name" class="form-control" id="name" value="{{$data['user']->name}}">
+                        @include('layouts.includes.single_field_validation',['field'=>'name'])
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="text" name="email" class="form-control" id="email" value="{{$data['user']->email}}">
+                        @include('layouts.includes.single_field_validation',['field'=>'email'])
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" name="password" class="form-control" id="password" value="{{$data['user']->password}}">
+                        @include('layouts.includes.single_field_validation',['field'=>'password'])
+                    </div>
+                    <div class="form-group">
+                        <label for="role_id">Role</label>
+                        <select name="role_id" class="form-control" id="role_id">
+                            @foreach($data['roles']as $role)
+                                @if($role->id==$data['role']->role_id)
+                                    <option value="{{$role}}" selected>{{$role->name}}</option>
+                                @else
+                                    <option value="{{$role->id}}">{{$role->name}}</option>
+                                @endif
+                            @endforeach
+                        </select>
+                        @include('layouts.includes.single_field_validation',['field'=>'role_id'])
+                    </div>
+                    <input type="submit" name="submit" id="submit" class="btn btn-success" value="Update User">
+                    <input type="submit" name="submit" id="submit" class="btn btn-danger" value="Clear">
+                </form>
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer">
+                Footer
+            </div>
+            <!-- /.box-footer-->
+        </div>
+        <!-- /.box -->
+
+    </section>
+@endsection
